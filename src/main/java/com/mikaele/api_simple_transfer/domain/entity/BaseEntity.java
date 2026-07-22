@@ -1,4 +1,4 @@
-package com.mikaele.api_simple_transfer.infrastructure.entity;
+package com.mikaele.api_simple_transfer.domain.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;

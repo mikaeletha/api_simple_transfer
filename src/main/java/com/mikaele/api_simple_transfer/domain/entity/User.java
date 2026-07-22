@@ -1,6 +1,6 @@
-package com.mikaele.api_simple_transfer.infrastructure.entity;
+package com.mikaele.api_simple_transfer.domain.entity;
 
-import com.mikaele.api_simple_transfer.infrastructure.enumeration.UserType;
+import com.mikaele.api_simple_transfer.domain.enumeration.UserType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
