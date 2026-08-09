@@ -1,10 +1,7 @@
 package com.mikaele.api_simple_transfer.domain.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.math.BigDecimal;
 
@@ -14,6 +11,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @Entity
 @Table(name = "transfers")
+@Builder
 public class Transfer extends BaseEntity{
 
     @Column(nullable = false, precision = 10, scale = 2)
