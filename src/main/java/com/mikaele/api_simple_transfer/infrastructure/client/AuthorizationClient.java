@@ -4,10 +4,8 @@ import com.mikaele.api_simple_transfer.application.dto.response.AuthorizationRes
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 
-//TODO: colocar url no application.properties
-@FeignClient(url = "https://util.devi.tools/api/v2/authorize", name = "auth")
+@FeignClient(url = "${authorization.url}", name = "auth")
 public interface AuthorizationClient {
-
     @GetMapping
     AuthorizationResponseDTO validateAuth();
 }
