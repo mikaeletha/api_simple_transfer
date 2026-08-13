@@ -28,6 +28,9 @@ public class User extends BaseEntity {
     @Column(nullable = false)
     private String password;
 
+    // private UserType userType;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private UserType userType;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)

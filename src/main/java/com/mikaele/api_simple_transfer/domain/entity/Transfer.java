@@ -14,7 +14,7 @@ import java.math.BigDecimal;
 @Builder
 public class Transfer extends BaseEntity{
 
-    @Column(nullable = false, precision = 10, scale = 2)
+    @Column(name = "amount", nullable = false, precision = 10, scale = 2)
     private BigDecimal value;
 
     @ManyToOne
