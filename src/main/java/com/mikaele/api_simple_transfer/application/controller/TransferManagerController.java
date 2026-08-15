@@ -1,6 +1,7 @@
 package com.mikaele.api_simple_transfer.application.controller;
 
 import com.mikaele.api_simple_transfer.application.dto.request.TransferRequestDTO;
+import com.mikaele.api_simple_transfer.application.dto.response.TransferResponseDTO;
 import com.mikaele.api_simple_transfer.application.service.TransferManagementService;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
@@ -18,8 +19,8 @@ public class TransferManagerController {
     private final TransferManagementService transferManagementService;
 
     @PostMapping
-    public ResponseEntity<Void> realizeTranfer(@RequestBody TransferRequestDTO transferRequest){
-        transferManagementService.executeTransfer(transferRequest);
-        return ResponseEntity.accepted().build();
+    public ResponseEntity<TransferResponseDTO> realizeTransfer(@RequestBody TransferRequestDTO transferRequestDTO) {
+        transferManagementService.executeTransfer(transferRequestDTO);
+        return ResponseEntity.ok(new TransferResponseDTO("Transfer completed successfully."));
     }
 }

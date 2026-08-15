@@ -1,17 +1,19 @@
 package com.mikaele.api_simple_transfer.application.service;
 
 import com.mikaele.api_simple_transfer.application.dto.request.TransferRequestDTO;
+import com.mikaele.api_simple_transfer.application.exception.transfer.InsufficientBalance;
+import com.mikaele.api_simple_transfer.application.exception.transfer.MerchantNotAllowed;
+import com.mikaele.api_simple_transfer.application.exception.transfer.NotificationFailed;
+import com.mikaele.api_simple_transfer.application.exception.transfer.TransferUnauthorized;
 import com.mikaele.api_simple_transfer.domain.entity.Transfer;
 import com.mikaele.api_simple_transfer.domain.entity.User;
 import com.mikaele.api_simple_transfer.domain.entity.Wallet;
 import com.mikaele.api_simple_transfer.domain.enumeration.UserType;
 import com.mikaele.api_simple_transfer.infrastructure.repository.TransferRepository;
+import feign.FeignException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.math.BigDecimal;
 
@@ -51,30 +53,23 @@ public class TransferManagementService {
 
         // enviar notificação
         sendNotification();
-
     }
 
     private void validatePayer(User user) {
         if (user.getUserType().equals(UserType.MERCHANT)) {
-            throw new ResponseStatusException(
-                    HttpStatus.FORBIDDEN, "Merchants are not allowed to initiate transfers.");
+            throw new MerchantNotAllowed("Merchants are not allowed to initiate transfers.");
         }
     }
 
     private void validatePayerBalance(User payer, BigDecimal amount) {
         if (payer.getWallet().getBalance().compareTo(amount) < 0) {
-            // throw new IllegalStateException("Insufficient balance to complete the transfer.");
-            throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST, "Insufficient balance to complete the transfer."
-            );
+            throw new InsufficientBalance("Insufficient balance to complete the transfer.");
         }
     }
 
     private void validateTransferAuthorization() {
         if (!authorizationService.validateAuth()) {
-            throw new ResponseStatusException(
-                    HttpStatus.FORBIDDEN, "Transfer authorization was denied by the authorization service."
-            );
+            throw new TransferUnauthorized("Transfer authorization was denied by the authorization service.");
         }
     }
 
@@ -85,11 +80,8 @@ public class TransferManagementService {
     private void sendNotification() {
         try {
             notificationService.sendNotification();
-        } catch (HttpClientErrorException e) {
-            throw new ResponseStatusException(
-                    HttpStatus.BAD_GATEWAY, "Failed to send transfer notification."
-            );
+        } catch (FeignException e) {
+            throw new NotificationFailed("Failed to send transfer notification.");
         }
     }
-
 }
