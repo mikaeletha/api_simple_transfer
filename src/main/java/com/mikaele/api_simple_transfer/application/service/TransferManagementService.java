@@ -45,7 +45,7 @@ public class TransferManagementService {
 
         // salvar transação
         Transfer transfer = Transfer.builder()
-                .value(transferRequestDTO.value())
+                .amount(transferRequestDTO.value())
                 .payer(payer)
                 .payee(payee)
                 .build();

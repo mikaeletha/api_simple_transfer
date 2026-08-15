@@ -24,15 +24,17 @@ public class User extends BaseEntity {
     @Column(unique = true, nullable = false)
     private String email;
 
-    // TODO: immplementar criptografia de senha
     @Column(nullable = false)
     private String password;
 
-    // private UserType userType;
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private UserType userType;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private Wallet wallet;
+
+    public boolean isMerchant() {
+        return UserType.MERCHANT.equals(this.userType);
+    }
 }
